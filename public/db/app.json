@@ -1,0 +1,18 @@
+{
+    "tables": [
+      { 
+          "id": 1,
+          "status": "busy",
+          "peopleAmount": 3,
+          "maxPeopleAmount": 4,
+          "bill": 45
+      },
+      { 
+          "id": 2,
+          "status": "busy",
+          "peopleAmount": 2,
+          "maxPeopleAmount": 3,
+          "bill": 30
+      }
+    ]
+  }

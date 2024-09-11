@@ -1,0 +1,6 @@
+{
+    "/api/*": "/$1",
+    "start": "npm-run-all -p start:*",
+    "start:react": "react-scripts start",
+    "start:server": "json-server --port 3131 --no-cors --delay 250 --watch public/db/app.json --routes public/db/routes.json"
+}
