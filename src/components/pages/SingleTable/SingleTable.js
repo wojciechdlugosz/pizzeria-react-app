@@ -1,10 +1,14 @@
 import { Form, Row, Col, InputGroup, Button } from "react-bootstrap";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { getTableById } from "../../../redux/tablesRedux";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
+import { editTableRequest } from "../../../redux/tablesRedux";
 
 const SingleTable = () => {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const { tableId } = useParams();
     const tableData = useSelector((state) => getTableById(state, tableId));
@@ -14,29 +18,35 @@ const SingleTable = () => {
     const [maxPeopleAmount, setMaxPeopleAmount] = useState(tableData.maxPeopleAmount || '');
     const [bill, setBill] = useState(tableData.bill || '');
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(editTableRequest({ id: tableId, status, peopleAmount, maxPeopleAmount, bill }));
+        navigate('/');
+    };
+
     if(!tableData) return <Navigate to="/" />
 
     return (
-        <Form className="mx-auto" style={{ width: '30%'}}>
+        <Form onSubmit={handleSubmit} className="mx-auto" style={{ width: '30%'}}>
             <h1 className="pb-2">Table {tableData.id}</h1>
             <Row className="my-2">
                 <Col><b>Status: </b></Col>
                 <Col>
                     <Form.Select>
-                        <option value={status}>{status}</option>
+                        <option value={status} onChange={e => setStatus(e.target.value)}>{status}</option>
                     </Form.Select>
                 </Col>
             </Row>
             <Row className="my-2">
                 <Col><b>People: </b></Col>
                 <Col xs="auto">
-                    <InputGroup><Form.Control style={{ maxWidth: '40px', marginRight: '-30px' }} value={peopleAmount}></Form.Control></InputGroup>
+                    <InputGroup><Form.Control style={{ maxWidth: '40px', marginRight: '-30px' }} value={peopleAmount} onChange={e => setPeopleAmount(e.target.value)}></Form.Control></InputGroup>
                 </Col>
                 <Col xs="auto">
                     <InputGroup.Text className="border-0 bg-transparent" >/</InputGroup.Text>
                 </Col>
                 <Col xs="auto">
-                    <InputGroup><Form.Control style={{ maxWidth: '40px', marginLeft: '-30px' }} value={maxPeopleAmount}></Form.Control></InputGroup>
+                    <InputGroup><Form.Control style={{ maxWidth: '40px', marginLeft: '-30px' }} value={maxPeopleAmount} onChange={e => setMaxPeopleAmount(e.target.value)}></Form.Control></InputGroup>
                 </Col>
             </Row>
             {tableData.status === 'Busy' ? (
@@ -46,11 +56,11 @@ const SingleTable = () => {
                         <InputGroup.Text className="border-0 bg-transparent" style={{ marginRight: '-30px' }}>$</InputGroup.Text>
                     </Col>
                     <Col xs="auto">
-                        <InputGroup><Form.Control style={{ maxWidth: '60px' }} value={bill}></Form.Control></InputGroup>
+                        <InputGroup><Form.Control style={{ maxWidth: '60px' }} value={bill} onChange={e => setBill(e.target.value)}></Form.Control></InputGroup>
                     </Col>
                 </Row>
             ) : '' }
-            <Button>Update</Button>
+            <Button type="submit">Update</Button>
         </Form>
     );
 };
