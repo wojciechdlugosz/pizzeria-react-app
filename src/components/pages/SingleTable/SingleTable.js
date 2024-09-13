@@ -33,15 +33,17 @@ const SingleTable = () => {
                     <InputGroup><Form.Control style={{ maxWidth: '40px', marginLeft: '-30px' }} value={tableData.maxPeopleAmount}></Form.Control></InputGroup>
                 </Col>
             </Row>
-            <Row className="my-2">
-                <Col><b>Bill: </b></Col>
-                <Col xs="auto">
-                    <InputGroup.Text className="border-0 bg-transparent" style={{ marginRight: '-30px' }}>$</InputGroup.Text>
-                </Col>
-                <Col xs="auto">
-                    <InputGroup><Form.Control style={{ maxWidth: '60px' }} value={tableData.bill}></Form.Control></InputGroup>
-                </Col>
-            </Row>
+            {tableData.status === 'Busy' ? (
+                <Row className="my-2">
+                    <Col><b>Bill: </b></Col>
+                    <Col xs="auto">
+                        <InputGroup.Text className="border-0 bg-transparent" style={{ marginRight: '-30px' }}>$</InputGroup.Text>
+                    </Col>
+                    <Col xs="auto">
+                        <InputGroup><Form.Control style={{ maxWidth: '60px' }} value={tableData.bill}></Form.Control></InputGroup>
+                    </Col>
+                </Row>
+            ) : '' }
             <Button>Update</Button>
         </div>
     );
