@@ -6,6 +6,7 @@ import Footer from "./components/views/Footer/Footer";
 import { Route, Routes } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import { fetchTables } from "./redux/tablesRedux";
+import { fetchDataStatus } from "./redux/statusRedux";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
@@ -14,6 +15,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => dispatch(fetchTables()), [dispatch]);
+  useEffect(() => dispatch(fetchDataStatus()), [dispatch]);
 
   return (
     <main>

@@ -4,6 +4,7 @@ import { getTableById } from "../../../redux/tablesRedux";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { editTableRequest } from "../../../redux/tablesRedux";
+import { getAllStatusOptions } from "../../../redux/statusRedux";
 
 const SingleTable = () => {
 
@@ -12,6 +13,7 @@ const SingleTable = () => {
 
     const { tableId } = useParams();
     const tableData = useSelector((state) => getTableById(state, tableId));
+    const statusOptions = useSelector(getAllStatusOptions);
 
     const [status, setStatus] = useState(tableData.status || '');
     const [peopleAmount, setPeopleAmount] = useState(tableData.peopleAmount || '0');
@@ -32,8 +34,10 @@ const SingleTable = () => {
             <Row className="my-2">
                 <Col><b>Status: </b></Col>
                 <Col>
-                    <Form.Select>
-                        <option value={status} onChange={e => setStatus(e.target.value)}>{status}</option>
+                    <Form.Select value={status} onChange={e => setStatus(e.target.value)}>
+                        {statusOptions.map(({ id, name }) => (
+                            <option key={id} value={name}>{name}</option>
+                        ))}
                     </Form.Select>
                 </Col>
             </Row>
