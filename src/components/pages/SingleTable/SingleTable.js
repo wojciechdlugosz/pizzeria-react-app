@@ -18,12 +18,24 @@ const SingleTable = () => {
     const [status, setStatus] = useState(tableData.status || '');
     const [peopleAmount, setPeopleAmount] = useState(tableData.peopleAmount || '0');
     const [maxPeopleAmount, setMaxPeopleAmount] = useState(tableData.maxPeopleAmount || '');
-    const [bill, setBill] = useState(tableData.bill || '');
+    const [bill, setBill] = useState(tableData.bill);
+    const [showBill, setShowBill] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(editTableRequest({ id: tableId, status, peopleAmount, maxPeopleAmount, bill }));
         navigate('/');
+    };
+
+    const handleStatusChange = (e) => {
+        const newStatus = e.target.value;
+        setStatus(newStatus);
+        if (newStatus === 'Busy') {
+            setShowBill(true);
+            setBill('0');
+        } else {
+            setShowBill(false)
+        };
     };
 
     if(!tableData) return <Navigate to="/" />
@@ -34,7 +46,7 @@ const SingleTable = () => {
             <Row className="my-2">
                 <Col><b>Status: </b></Col>
                 <Col>
-                    <Form.Select value={status} onChange={e => setStatus(e.target.value)}>
+                    <Form.Select value={status} onChange={handleStatusChange}>
                         {statusOptions.map(({ id, name }) => (
                             <option key={id} value={name}>{name}</option>
                         ))}
@@ -53,7 +65,7 @@ const SingleTable = () => {
                     <InputGroup><Form.Control style={{ maxWidth: '40px', marginLeft: '-30px' }} value={maxPeopleAmount} onChange={e => setMaxPeopleAmount(e.target.value)}></Form.Control></InputGroup>
                 </Col>
             </Row>
-            {tableData.status === 'Busy' ? (
+            {(showBill || status === 'Busy') ? (
                 <Row className="my-2">
                     <Col><b>Bill: </b></Col>
                     <Col xs="auto">
