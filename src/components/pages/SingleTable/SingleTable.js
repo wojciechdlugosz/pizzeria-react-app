@@ -33,9 +33,30 @@ const SingleTable = () => {
         if (newStatus === 'Busy') {
             setShowBill(true);
             setBill('0');
+        } else if (newStatus === 'Cleaning' || newStatus === 'Free') {
+            setShowBill(false);
+            setPeopleAmount('0');
         } else {
-            setShowBill(false)
+            setShowBill(false);
+            setPeopleAmount(tableData.peopleAmount);
         };
+    };
+
+    const handlePeopleAmountChange = (e) => {
+        const value = parseInt(e.target.value);
+        if (!isNaN(value) && value >= 0 && value <= 10 && value < parseInt(maxPeopleAmount)) {
+            setPeopleAmount(value.toString());
+        }
+    };
+
+    const handleMaxPeopleAmountChange = (e) => {
+        const value = parseInt(e.target.value);
+        if (!isNaN(value) && value >= 0 && value <= 10) {
+            setMaxPeopleAmount(value.toString());
+            if (value < parseInt(peopleAmount)) {
+                setPeopleAmount(value.toString());
+            }
+        }
     };
 
     if(!tableData) return <Navigate to="/" />
@@ -56,13 +77,13 @@ const SingleTable = () => {
             <Row className="my-2">
                 <Col><b>People: </b></Col>
                 <Col xs="auto">
-                    <InputGroup><Form.Control style={{ maxWidth: '40px', marginRight: '-30px' }} value={peopleAmount} onChange={e => setPeopleAmount(e.target.value)}></Form.Control></InputGroup>
+                    <InputGroup><Form.Control style={{ maxWidth: '50px', marginRight: '-30px' }} value={peopleAmount} onChange={handlePeopleAmountChange}></Form.Control></InputGroup>
                 </Col>
                 <Col xs="auto">
                     <InputGroup.Text className="border-0 bg-transparent" >/</InputGroup.Text>
                 </Col>
                 <Col xs="auto">
-                    <InputGroup><Form.Control style={{ maxWidth: '40px', marginLeft: '-30px' }} value={maxPeopleAmount} onChange={e => setMaxPeopleAmount(e.target.value)}></Form.Control></InputGroup>
+                    <InputGroup><Form.Control style={{ maxWidth: '50px', marginLeft: '-30px' }} value={maxPeopleAmount} onChange={handleMaxPeopleAmountChange}></Form.Control></InputGroup>
                 </Col>
             </Row>
             {(showBill || status === 'Busy') ? (
