@@ -1,4 +1,4 @@
-import { Form, Row, Col, InputGroup, Button } from "react-bootstrap";
+import { Form, Row, Col, InputGroup, Button, Spinner } from "react-bootstrap";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { getTableById } from "../../../redux/tablesRedux";
 import { useSelector, useDispatch } from "react-redux";
@@ -23,7 +23,7 @@ const SingleTable = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(editTableRequest({ id: tableId, status, peopleAmount, maxPeopleAmount, bill }));
+        dispatch(editTableRequest({ id: tableId, status, peopleAmount, maxPeopleAmount, bill }))
         navigate('/');
     };
 
