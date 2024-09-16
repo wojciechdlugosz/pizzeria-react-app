@@ -1,3 +1,6 @@
+import App from "../App";
+import { API_URL } from "../config";
+
 //selectors
 export const getAllStatusOptions = ({ status }) => status;
 
@@ -9,7 +12,7 @@ const DATA_STATUS = createActionName("DATA_STATUS");
 export const getDataStatus = (payload) => ({ type: DATA_STATUS, payload });
 export const fetchDataStatus = () => {
   return (dispatch) => {
-    fetch("http://localhost:3131/api/status")
+    fetch(API_URL + "/status")
       .then((res) => res.json())
       .then((status) => dispatch(getDataStatus(status)));
   };
